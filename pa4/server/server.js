@@ -1,6 +1,7 @@
 import express from 'express';
 import mysql from 'mysql2/promise';
 import cors from 'cors';
+import { hashutil } from '../src/data/Hashutil.js';
 
 const app = express();
 app.use(cors());
@@ -77,6 +78,28 @@ app.delete('/api/reservations/:id', async (req, res) => {
   } catch (err) {
     console.error('Error deleting reservation:', err);
     res.status(500).json({ error: 'Failed to delete reservation' });
+  }
+});
+
+app.post('/api/signup', async (req, res) => {
+  try {
+    const { email, username, password, profile_image } = req.body;
+
+    const [existingUser] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+    if (existingUser.length > 0) {
+      return res.status(400).json({ error: 'Email already exists' });
+    }
+
+    const hashedPassword = hashutil(email, password);
+
+    const query = 'INSERT INTO users (email, username, password, profile_image) VALUES (?, ?, ?, ?)';
+    const values = [email, username, hashedPassword, profile_image];
+    const [result] = await db.query(query, values);
+
+    res.status(201).json({ id: result.insertId });
+  } catch (err) {
+    console.error('Error creating user:', err);
+    res.status(500).json({ error: 'Failed to create user' });
   }
 });
 
