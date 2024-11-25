@@ -191,6 +191,20 @@ app.put('/api/user/:id/password', async (req, res) => {
   }
 });
 
+app.put('/api/user/:id/name', async (req, res) => {
+  try {
+    const { newName } = req.body;
+    const userId = req.params.id;
+
+    await db.query('UPDATE users SET username = ? WHERE id = ?', [newName, userId]);
+
+    res.status(200).json({ message: 'Name updated successfully' });
+  } catch (err) {
+    console.error('Error updating name:', err);
+    res.status(500).json({ error: 'Failed to update name' });
+  }
+});
+
 const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

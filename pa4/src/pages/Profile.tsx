@@ -21,6 +21,7 @@ function Profile() {
   const [uploading, setUploading] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [newName, setNewName] = useState("");
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -71,6 +72,27 @@ function Profile() {
         console.error("Error updating password:", error);
         alert("Failed to update password");
       }
+    }
+  };
+
+  const handleNameChange = async () => {
+    const userToken = Cookies.get('userToken');
+    
+    try {
+      const response = await axios.put(`http://localhost:5000/api/user/${userToken}/name`, {
+        newName
+      });
+
+      if (response.status === 200) {
+        setUserData(prev => prev ? {
+          ...prev,
+          username: newName
+        } : null);
+        alert("Username updated successfully!");
+      }
+    } catch (error) {
+      console.error('Error updating name:', error);
+      alert('Failed to update name');
     }
   };
 
@@ -322,6 +344,8 @@ function Profile() {
                   id="newName"
                   placeholder="Enter the new name"
                   aria-label="name input"
+                  value={newName}
+                  onChange={(e) => setNewName(e.target.value)}
                 ></input>
               </div>
             </div>
@@ -333,7 +357,12 @@ function Profile() {
               >
                 Close
               </button>
-              <button type="button" className="btn btn-primary" id="save-name">
+              <button 
+                type="button" 
+                className="btn btn-primary"
+                onClick={handleNameChange}
+                data-bs-dismiss="modal"
+              >
                 Save changes
               </button>
             </div>
