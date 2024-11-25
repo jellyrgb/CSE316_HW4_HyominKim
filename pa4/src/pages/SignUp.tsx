@@ -91,7 +91,7 @@ function SignUp() {
           />
         </div>
         <div className="sign-up-submit">
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn btn-outline-primary">
             Sign Up
           </button>
         </div>

@@ -98,8 +98,37 @@ app.post('/api/signup', async (req, res) => {
 
     res.status(201).json({ id: result.insertId });
   } catch (err) {
-    console.error('Error creating user:', err);
-    res.status(500).json({ error: 'Failed to create user' });
+    console.error('Error signing up:', err);
+    res.status(500).json({ error: 'Failed to sign up' });
+  }
+});
+
+app.post('/api/signin', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    
+    const [users] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+    
+    if (users.length === 0) {
+      return res.status(401).json({ error: 'Wrong email or wrong password' });
+    }
+    
+    const user = users[0];
+    const hashedPassword = hashutil(email, password);
+    
+    if (hashedPassword !== user.password) {
+      return res.status(401).json({ error: 'Wrong email or wrong password' });
+    }
+    
+    res.json({
+      id: user.id,
+      email: user.email,
+      username: user.username,
+      profile_image: user.profile_image
+    });
+  } catch (err) {
+    console.error('Error signing in:', err);
+    res.status(500).json({ error: 'Failed to sign in' });
   }
 });
 
