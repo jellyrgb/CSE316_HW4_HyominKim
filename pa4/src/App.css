@@ -103,7 +103,7 @@ body {
   top: 10px;
 }
 
-#sign-in-button {
+#navbar-sign-in {
   color: white;
   border-color: white;
   margin-left: 15px;
@@ -277,6 +277,38 @@ h2 {
 
 .reserved-item div {
   margin-bottom: 10px;
+}
+
+
+/* Sign In Page */
+.sign-in-page-title {
+  margin-bottom: 50px;
+}
+
+.sign-in-submit {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.sign-in-page-button {
+  margin-right: 5px;
+}
+
+.sign-in-page-button:last-child {
+  margin-right: 0;
+}
+
+
+/* Sign Up Page */
+.sign-up-page-title {
+  margin-bottom: 50px;
+}
+
+.sign-up-submit {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 
 

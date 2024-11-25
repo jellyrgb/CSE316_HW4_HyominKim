@@ -12,6 +12,8 @@ import FacilityList from "./pages/FacilityList.tsx";
 import FacilityReservation from "./pages/FacilityReservation.tsx";
 import ReservationList from "./pages/ReservationList.tsx";
 import Profile from "./pages/Profile.tsx";
+import SignIn from "./pages/SignIn.tsx";
+import SignUp from "./pages/SignUp.tsx";
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
               <Route path="/facilityReservation" element={<FacilityReservation />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/reservationList" element={<ReservationList />} />
+              <Route path="/signUp" element={<SignUp />} />
+              <Route path="/signIn" element={<SignIn />} />
             </Routes>
           </div>
         </Router>

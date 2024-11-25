@@ -3,10 +3,15 @@
 
 // This component is renders Navigation bar.
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSignInClick = () => {
+    navigate("/signIn");
+  };
 
   // Toggle the menu, controlled by hamburger menu button
   const toggleMenu = () => {
@@ -77,7 +82,14 @@ function Navbar() {
           alt="User Profile"
         />
 
-        <button type="button" id="sign-in-button" className="btn btn-outline-secondary">Sign in</button>
+        <button
+          type="button"
+          id="navbar-sign-in"
+          className="btn btn-outline-secondary"
+          onClick={handleSignInClick}
+        >
+          Sign in
+        </button>
       </div>
     </nav>
   );
