@@ -59,10 +59,6 @@ body {
   margin-left: 5px;
 }
 
-.navbar-right {
-  margin-right: 15px;
-}
-
 .hamburger-menu {
   display: none;
 }
@@ -98,6 +94,20 @@ body {
 .dropdown:hover .dropdown-content {
   display: flex;
   flex-direction: column;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  right: 10px;
+  top: 10px;
+}
+
+#sign-in-button {
+  color: white;
+  border-color: white;
+  margin-left: 15px;
+  margin-right: 10px;
 }
 
 

@@ -66,15 +66,19 @@ function Navbar() {
         </div>
       </div>
 
-      {/* Profile picture in navbar */}
-      <img
-        id="navbar-profile"
-        className="navbar-right navbar-profile"
-        width="42px"
-        height="42px"
-        src="/src/images/user.png"
-        alt="User Profile"
-      />
+      <div className="navbar-right">
+        {/* Profile picture in navbar */}
+        <img
+          id="navbar-profile"
+          className="navbar-profile"
+          width="42px"
+          height="42px"
+          src="/src/images/user.png"
+          alt="User Profile"
+        />
+
+        <button type="button" id="sign-in-button" className="btn btn-outline-secondary">Sign in</button>
+      </div>
     </nav>
   );
 }
