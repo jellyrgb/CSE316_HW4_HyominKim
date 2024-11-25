@@ -2,12 +2,14 @@
 // hyomin.kim@stonybrook.edu
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function SignUp() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -27,6 +29,7 @@ function SignUp() {
 
       if (response.status === 201) {
         alert("User registered successfully!");
+        navigate("/signIn");
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response && error.response.status === 400 && error.response.data.error === 'Email already exists') {

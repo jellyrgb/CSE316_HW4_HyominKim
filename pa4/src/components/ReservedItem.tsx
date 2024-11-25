@@ -3,12 +3,49 @@
 
 // This component is a child component of ReservationList.tsx.
 // It renders the reservation information.
+import { useState, useEffect } from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+
 interface ReservationItemProps {
   reservation: any;
   onDelete: () => void;
 }
 
+interface UserData {
+  email: string;
+  username: string;
+  profile_image: string | null;
+}
+
 function ReservedItem({ reservation, onDelete }: ReservationItemProps) {
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState<UserData | null>(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const userToken = Cookies.get("userToken");
+
+      if (!userToken) {
+        navigate("/signIn");
+        return;
+      }
+
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/user/${userToken}`
+        );
+        setUserData(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        alert("Failed to load user data");
+      }
+    };
+
+    fetchUserData();
+  }, [navigate]);
+
   return (
     <div className="reserved-item">
       {/* Facility image */}
@@ -86,7 +123,7 @@ function ReservedItem({ reservation, onDelete }: ReservationItemProps) {
           >
             <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5" />
           </svg>
-          <span>{reservation.user_name} + {reservation.user_number - 1}</span>
+          <span>{userData?.username} + {reservation.user_number - 1}</span>
         </div>
 
         {/* Affiliation */}
