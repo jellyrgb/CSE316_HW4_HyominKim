@@ -1,0 +1,350 @@
+/* Hyomin Kim
+hyomin.kim@stonybrook.edu */
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+
+/*** My Stylesheet ***/
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f3ff;
+  padding-top: 60px;
+}
+
+
+/* Navbar */
+.navbar {
+  background-color: #474747;
+  overflow: visible;
+  height: 60px;
+  padding: 0;
+
+  position: fixed;
+  width: 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+
+  z-index: 10;
+}
+
+.navbar-link {
+  margin-right: 10px;
+}
+
+.navbar a {
+  float: left;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 10px 14px;
+  text-decoration: none;
+  border-radius: 10px;
+}
+
+.navbar a:hover {
+  background-color: #858585;
+  color: white;
+}
+
+.navbar button:hover {
+  background-color: #858585;
+  color: white;
+}
+
+.navbar-left {
+  margin-left: 5px;
+}
+
+.navbar-right {
+  margin-right: 15px;
+}
+
+.hamburger-menu {
+  display: none;
+}
+
+.dropdown {
+  padding-top: 1px;
+  float: right;
+}
+
+.dropdown .dropbutton {
+  background-color: #474747;
+  color: white;
+  border: none;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #474747;
+  min-width: 160px;
+  z-index: 2;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-content a {
+  color: white;
+  padding: 10px 14px;
+  display: block;
+  text-align: left;
+  border-radius: 0px;
+}
+
+.dropdown:hover .dropdown-content {
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* Page content */
+.page-title {
+  padding-left: 100px;
+  padding-top: 5px;
+}
+
+.main-content {
+  padding-left: 120px;
+}
+
+
+/* Home page */
+.home-page {
+  text-align: left;
+  padding-top: 10px;
+}
+
+.numbered {
+  margin-bottom: 10px;
+}
+
+
+/* Facility list page */
+.facility-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+#facility {
+  margin-bottom: 20px;
+}
+
+.facility-item {
+  box-sizing: border-box;
+  background-color: white;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  margin: 10px;
+  border-radius: 5px;
+}
+
+.facility-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.facility-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.facility-info p,
+h2 {
+  margin: 2px 0;
+  text-align: left;
+}
+
+.facility-info h2 {
+  margin-top: 10px;
+}
+
+.facility-info p {
+  margin-bottom: 10px;
+}
+
+.facility-info div {
+  display: flex;
+  align-items: center;
+}
+
+.facility-info svg {
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+
+/* Reservation Form page */
+#facility-selector {
+  margin-bottom: 20px;
+}
+
+.reservation-item {
+  display: flex;
+}
+
+.reservation-item img {
+  width: 60%;
+  height: auto;
+  border-radius: 10px;
+  margin-right: 15px;
+}
+
+.reservation-item div {
+  margin-bottom: 10px;
+}
+
+.facility-days {
+  text-align: left;
+}
+
+.form-group {
+  margin-top: 10px;
+  text-align: left;
+}
+
+.submit-button {
+  margin-bottom: 50px;
+}
+
+
+/* User information page */
+#profile-pic {
+  width: 180px;
+  height: 180px;
+}
+
+#profile-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.profile-button {
+  height: 35px;
+  margin-top: 10px;
+}
+
+.profile-padding {
+  margin-bottom: 15px;
+}
+
+.profile-placeholder {
+  margin: 0;
+}
+
+#file-input {
+  display: block;
+}
+
+
+/* My reservations page */
+.reserved-item {
+  display: flex;
+  background-color: white;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  padding: 20px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+#reserved-facility-name {
+  margin-bottom: 10px;
+}
+
+.reserved-item img {
+  width: 50%;
+  height: 50%;
+  border-radius: 10px;
+  margin-right: 15px;
+}
+
+.reserved-item div {
+  margin-bottom: 10px;
+}
+
+
+/* Style for 600px < screen <= 800px */
+@media (max-width: 800px) {
+
+  .facility-info p,
+  h2 {
+    margin: 1px 0;
+  }
+
+  .facility-list {
+    width: 70%;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    justify-content: center;
+    margin: 0 auto;
+  }
+}
+
+
+/* Style for screen <= 600px */
+@media (max-width: 600px) {
+  body {
+    padding-top: 0;
+  }
+
+  .navbar {
+    z-index: 10;
+    position: relative;
+    height: auto;
+  }
+
+  .hamburger-menu {
+    display: block;
+    color: white;
+    cursor: pointer;
+    background-color: transparent;
+  }
+
+  .dropbutton {
+    width: 100%;
+  }
+
+  .navbar-center.show {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  #navbar-profile {
+    display: none;
+  }
+
+  .navbar-center,
+  .navbar-right {
+    display: none;
+  }
+
+  .navbar a {
+    margin: 0;
+  }
+
+  .facility-list {
+    width: 80%;
+  }
+
+  .reserved-item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .reserved-item img {
+    width: 100%;
+    height: auto;
+  }
+
+  #profile-page {
+    padding: 0 70px;
+  }
+}
