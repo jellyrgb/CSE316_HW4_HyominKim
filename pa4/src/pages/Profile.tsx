@@ -4,12 +4,77 @@
 // This is the component for the user profile page.
 // It displays the user's information.
 // It also opens the modal for the user to change their profile image, password, and name.
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
+
+interface UserData {
+  email: string;
+  username: string;
+  profile_image: string | null;
+}
 
 function Profile() {
-  const [profileImage] = useState("/src/images/user.png");
-  const [password] = useState("******");
-  const [name] = useState("John Doe");
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [uploading, setUploading] = useState(false);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const userToken = Cookies.get('userToken');
+      
+      if (!userToken) {
+        navigate('/signin');
+        return;
+      }
+
+      try {
+        const response = await axios.get(`http://localhost:5000/api/user/${userToken}`);
+        setUserData(response.data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        alert('Failed to load user data');
+      }
+    };
+
+    fetchUserData();
+  }, [navigate]);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    
+    const file = e.target.files[0];
+    setUploading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', 'facility_reservation'); // Cloudinary upload preset
+
+      const cloudinaryResponse = await axios.post(
+        `https://api.cloudinary.com/v1_1/docfch5cp/image/upload`,
+        formData
+      );
+
+      const imageUrl = cloudinaryResponse.data.secure_url;
+      const userToken = Cookies.get('userToken');
+
+      await axios.put(`http://localhost:5000/api/user/${userToken}/image`, {
+        profile_image: imageUrl
+      });
+
+      setUserData(prev => prev ? {
+        ...prev,
+        profile_image: imageUrl
+      } : null);
+    } catch (error) {
+      console.error('Error updating profile image:', error);
+      alert('Failed to update profile image');
+    } finally {
+      setUploading(false);
+    }
+  };
 
   return (
     <div className="container mt-4">
@@ -21,7 +86,7 @@ function Profile() {
         <img
           className="profile-padding"
           id="profile-pic"
-          src={profileImage}
+          src={userData?.profile_image || "/src/images/user.png"}
           alt="User Profile"
         />
         <button
@@ -34,11 +99,11 @@ function Profile() {
         </button>
 
         {/* Email */}
-        <p className="profile-padding">Email: abc@stonybrook.edu</p>
+        <p className="profile-padding">Email: {userData?.email}</p>
 
         {/* Password */}
         <div className="button-container profile-padding">
-          <p className="profile-placeholder">Password: {password}</p>
+          <p className="profile-placeholder">Password: ******</p>
           <button
             id="change-password"
             className="profile-button btn btn-outline-dark"
@@ -51,7 +116,7 @@ function Profile() {
 
         {/* Name */}
         <div className="button-container profile-padding">
-          <p className="profile-placeholder">Name: {name}</p>
+          <p className="profile-placeholder">Name: {userData?.username}</p>
           <button
             id="change-name"
             className="profile-button btn btn-outline-dark"
@@ -91,7 +156,11 @@ function Profile() {
                   className="form-control"
                   type="file"
                   id="formFile"
-                ></input>
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  disabled={uploading}
+                />
+              {uploading && <div className="mt-2">Uploading...</div>}
               </div>
             </div>
             <div className="modal-footer">

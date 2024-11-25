@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Cookies from 'js-cookie';
 
 function SignIn() {
   const navigate = useNavigate();
@@ -23,9 +24,9 @@ function SignIn() {
       });
 
       if (response.status === 200) {
-        // 로그인 성공 시 처리
+        Cookies.set('userToken', response.data.id, { expires: 1 });
         alert("Successfully signed in!");
-        navigate("/"); // 홈페이지로 이동
+        navigate("/");
       }
     } catch (error) {
       if (

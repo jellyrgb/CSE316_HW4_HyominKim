@@ -132,6 +132,34 @@ app.post('/api/signin', async (req, res) => {
   }
 });
 
+app.get('/api/user/:id', async (req, res) => {
+  try {
+    const [users] = await db.query('SELECT id, email, username, profile_image FROM users WHERE id = ?', [req.params.id]);
+    
+    if (users.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json(users[0]);
+  } catch (err) {
+    console.error('Error fetching user:', err);
+    res.status(500).json({ error: 'Failed to fetch user' });
+  }
+});
+
+app.put('/api/user/:id/image', async (req, res) => {
+  try {
+    const { profile_image } = req.body;
+    const userId = req.params.id;
+
+    await db.query('UPDATE users SET profile_image = ? WHERE id = ?', [profile_image, userId]);
+    res.status(200).json({ message: 'Profile image updated successfully' });
+  } catch (err) {
+    console.error('Error updating user image:', err);
+    res.status(500).json({ error: 'Failed to update profile image' });
+  }
+});
+
 const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

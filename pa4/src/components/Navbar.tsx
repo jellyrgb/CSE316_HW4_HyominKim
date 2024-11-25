@@ -2,15 +2,42 @@
 // hyomin.kim@stonybrook.edu
 
 // This component is renders Navigation bar.
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleSignInClick = () => {
-    navigate("/signIn");
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      const userToken = Cookies.get('userToken');
+      setIsLoggedIn(!!userToken);
+
+      if (userToken) {
+        try {
+          const response = await axios.get(`http://localhost:5000/api/user/${userToken}`);
+          setProfileImage(response.data.profile_image);
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
+      }
+    };
+
+    checkLoginStatus();
+    const interval = setInterval(checkLoginStatus, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleSignOut = () => {
+    Cookies.remove('userToken');
+    setIsLoggedIn(false);
+    navigate('/');
   };
 
   // Toggle the menu, controlled by hamburger menu button
@@ -73,23 +100,40 @@ function Navbar() {
 
       <div className="navbar-right">
         {/* Profile picture in navbar */}
-        <img
-          id="navbar-profile"
-          className="navbar-profile"
-          width="42px"
-          height="42px"
-          src="/src/images/user.png"
-          alt="User Profile"
-        />
+        {isLoggedIn && profileImage ? (
+          <img
+            id="navbar-profile"
+            className="navbar-profile"
+            width="42px"
+            height="42px"
+            src={profileImage}
+            alt="User Profile"
+          />
+        ) : (
+          <img
+            id="navbar-profile"
+            className="navbar-profile"
+            width="42px"
+            height="42px"
+            src="/src/images/user.png"
+            alt="Default Profile"
+          />
+        )}
 
-        <button
-          type="button"
-          id="navbar-sign-in"
-          className="btn btn-outline-secondary"
-          onClick={handleSignInClick}
-        >
-          Sign in
-        </button>
+        {isLoggedIn ? (
+          <button
+            type="button"
+            id="navbar-sign-in"
+            className="btn btn-outline-secondary"
+            onClick={handleSignOut}
+          >
+            Sign Out
+          </button>
+        ) : (
+          <Link to="/signIn" id="navbar-sign-in" className="btn btn-outline-secondary">
+            Sign In
+          </Link>
+        )}
       </div>
     </nav>
   );

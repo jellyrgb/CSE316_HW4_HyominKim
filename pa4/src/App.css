@@ -110,6 +110,10 @@ body {
   margin-right: 10px;
 }
 
+#navbar-profile {
+  border-radius: 50%;
+}
+
 
 /* Page content */
 .page-title {
@@ -226,6 +230,7 @@ h2 {
 #profile-pic {
   width: 180px;
   height: 180px;
+  border-radius: 50%;
 }
 
 #profile-page {

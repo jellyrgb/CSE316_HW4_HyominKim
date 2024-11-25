@@ -11,12 +11,17 @@
     "nodemon": "nodemon ./server/server.js"
   },
   "dependencies": {
+    "@cloudinary/react": "^1.13.1",
+    "@cloudinary/url-gen": "^1.21.0",
+    "@types/js-cookie": "^3.0.6",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.7.7",
     "body-parser": "^1.20.3",
+    "cloudinary-react": "^1.8.1",
     "cors": "^2.8.5",
     "crypto-js": "^4.2.0",
     "express": "^4.21.1",
+    "js-cookie": "^3.0.5",
     "mysql2": "^3.11.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
