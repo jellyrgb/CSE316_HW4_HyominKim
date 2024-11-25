@@ -1,5 +1,8 @@
 // Hyomin Kim
 // hyomin.kim@stonybrook.edu
+
+// This page is for signing up.
+// It has a form for signing up.
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";

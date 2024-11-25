@@ -1,5 +1,8 @@
 // Hyomin Kim
 // hyomin.kim@stonybrook.edu
+
+// This page is for signing in.
+// It has a form for signing in and a button to navigate to the sign up page.
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
