@@ -160,6 +160,37 @@ app.put('/api/user/:id/image', async (req, res) => {
   }
 });
 
+app.put('/api/user/:id/password', async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    const userId = req.params.id;
+
+    const [users] = await db.query('SELECT email, password FROM users WHERE id = ?', [userId]);
+    if (users.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const user = users[0];
+    const hashedCurrentPassword = hashutil(user.email, currentPassword);
+
+    if (hashedCurrentPassword !== user.password) {
+      console.log('currentPassword: ', currentPassword);
+      console.log('email: ', user.email);
+      console.log('hashedCurrentPassword: ', hashedCurrentPassword);
+      console.log('user.password: ' , user.password);
+      return res.status(401).json({ error: 'Current password is incorrect' });
+    }
+
+    const hashedNewPassword = hashutil(user.email, newPassword);
+    await db.query('UPDATE users SET password = ? WHERE id = ?', [hashedNewPassword, userId]);
+
+    res.status(200).json({ message: 'Password updated successfully' });
+  } catch (err) {
+    console.error('Error updating password:', err);
+    res.status(500).json({ error: 'Failed to update password' });
+  }
+});
+
 const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

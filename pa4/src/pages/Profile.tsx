@@ -6,8 +6,8 @@
 // It also opens the modal for the user to change their profile image, password, and name.
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 interface UserData {
   email: string;
@@ -19,38 +19,71 @@ function Profile() {
   const navigate = useNavigate();
   const [userData, setUserData] = useState<UserData | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const userToken = Cookies.get('userToken');
-      
+      const userToken = Cookies.get("userToken");
+
       if (!userToken) {
-        navigate('/signin');
+        navigate("/signIn");
         return;
       }
 
       try {
-        const response = await axios.get(`http://localhost:5000/api/user/${userToken}`);
+        const response = await axios.get(
+          `http://localhost:5000/api/user/${userToken}`
+        );
         setUserData(response.data);
       } catch (error) {
-        console.error('Error fetching user data:', error);
-        alert('Failed to load user data');
+        console.error("Error fetching user data:", error);
+        alert("Failed to load user data");
       }
     };
 
     fetchUserData();
   }, [navigate]);
 
+  const handlePasswordChange = async () => {
+    const userToken = Cookies.get("userToken");
+
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/user/${userToken}/password`,
+        {
+          currentPassword,
+          newPassword,
+        }
+      );
+
+      if (response.status === 200) {
+        alert("Password updated successfully!");
+      }
+    } catch (error) {
+      if (
+        axios.isAxiosError(error) &&
+        error.response &&
+        error.response.status === 401
+      ) {
+        alert("Current password is incorrect.");
+      } else {
+        console.error("Error updating password:", error);
+        alert("Failed to update password");
+      }
+    }
+  };
+
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
-    
+
     const file = e.target.files[0];
     setUploading(true);
 
     try {
       const formData = new FormData();
-      formData.append('file', file);
-      formData.append('upload_preset', 'facility_reservation'); // Cloudinary upload preset
+      formData.append("file", file);
+      formData.append("upload_preset", "facility_reservation"); // Cloudinary upload preset
 
       const cloudinaryResponse = await axios.post(
         `https://api.cloudinary.com/v1_1/docfch5cp/image/upload`,
@@ -58,19 +91,23 @@ function Profile() {
       );
 
       const imageUrl = cloudinaryResponse.data.secure_url;
-      const userToken = Cookies.get('userToken');
+      const userToken = Cookies.get("userToken");
 
       await axios.put(`http://localhost:5000/api/user/${userToken}/image`, {
-        profile_image: imageUrl
+        profile_image: imageUrl,
       });
 
-      setUserData(prev => prev ? {
-        ...prev,
-        profile_image: imageUrl
-      } : null);
+      setUserData((prev) =>
+        prev
+          ? {
+              ...prev,
+              profile_image: imageUrl,
+            }
+          : null
+      );
     } catch (error) {
-      console.error('Error updating profile image:', error);
-      alert('Failed to update profile image');
+      console.error("Error updating profile image:", error);
+      alert("Failed to update profile image");
     } finally {
       setUploading(false);
     }
@@ -160,7 +197,7 @@ function Profile() {
                   onChange={handleImageUpload}
                   disabled={uploading}
                 />
-              {uploading && <div className="mt-2">Uploading...</div>}
+                {uploading && <div className="mt-2">Uploading...</div>}
               </div>
             </div>
             <div className="modal-footer">
@@ -207,16 +244,28 @@ function Profile() {
             </div>
             <div className="modal-body">
               <div className="mb-3">
-                <label htmlFor="newPassword" className="form-label">
-                  New password
+                <label htmlFor="currentPassword" className="form-label">
+                  Current Password
                 </label>
                 <input
-                  className="form-control"
                   type="password"
+                  className="form-control"
+                  id="currentPassword"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="newPassword" className="form-label">
+                  New Password
+                </label>
+                <input
+                  type="password"
+                  className="form-control"
                   id="newPassword"
-                  placeholder="Enter the new password"
-                  aria-label="password input"
-                ></input>
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
               </div>
             </div>
             <div className="modal-footer">
@@ -230,7 +279,8 @@ function Profile() {
               <button
                 type="button"
                 className="btn btn-primary"
-                id="save-password"
+                onClick={handlePasswordChange}
+                data-bs-dismiss="modal"
               >
                 Save changes
               </button>
