@@ -38,7 +38,8 @@ function ReservationForm({ onSelectFacility }: ReservationFormProps) {
 
   // Function to get the date only
   const getDateOnly = (dateString: string) => {
-    return new Date(dateString).toISOString().split('T')[0];
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-CA'); // to use YYYY-MM-DD format
   };
 
   // Handle the form submission
@@ -104,7 +105,7 @@ function ReservationForm({ onSelectFacility }: ReservationFormProps) {
     // Create a reservation object
     const reservation: Reservation = {
       id: 0, // Temporary id, will be replaced by the server
-      reservation_date: date,
+      reservation_date: getDateOnly(date),
       user_number: people,
       is_suny_korea: affiliation === "yes",
       purpose,
@@ -115,9 +116,18 @@ function ReservationForm({ onSelectFacility }: ReservationFormProps) {
     // Check for existing reservation on the same day
     const existingReservation = await axios.get("http://localhost:5000/api/reservations");
     const existingReservationData = existingReservation.data;
-    const existingReservationOnSameDay = existingReservationData.find(
-      (r: any) => getDateOnly(r.reservation_date) === getDateOnly(date)
-    );
+
+    let existingReservationOnSameDay: any = null;
+
+    for (const r of existingReservationData) {
+      console.log("existing: " + getDateOnly(r.reservation_date));
+      if (getDateOnly(r.reservation_date) === getDateOnly(date)) {
+        existingReservationOnSameDay = r;
+        break;
+      }
+    }
+
+    console.log("selected date: " + getDateOnly(date));
 
     if (existingReservationOnSameDay) {
       alert("Cannot reserve. (Existing reservation on the same day)");
