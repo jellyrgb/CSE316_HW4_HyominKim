@@ -114,7 +114,7 @@ function ReservationForm({ onSelectFacility }: ReservationFormProps) {
     };
 
     // Check for existing reservation on the same day
-    const existingReservation = await axios.get("http://localhost:5000/api/reservations");
+    const existingReservation = await axios.get("http://localhost:5001/api/reservations");
     const existingReservationData = existingReservation.data;
 
     let existingReservationOnSameDay: any = null;

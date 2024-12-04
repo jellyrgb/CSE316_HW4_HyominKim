@@ -34,7 +34,7 @@ function ReservedItem({ reservation, onDelete }: ReservationItemProps) {
 
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/user/${userToken}`
+          `http://localhost:5001/api/user/${userToken}`
         );
         setUserData(response.data);
       } catch (error) {

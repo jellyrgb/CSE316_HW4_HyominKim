@@ -20,7 +20,7 @@ function Navbar() {
 
       if (userToken) {
         try {
-          const response = await axios.get(`http://localhost:5000/api/user/${userToken}`);
+          const response = await axios.get(`http://localhost:5001/api/user/${userToken}`);
           setProfileImage(response.data.profile_image);
         } catch (error) {
           console.error('Error fetching user data:', error);

@@ -27,7 +27,7 @@ export const FacilityProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const fetchFacilities = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/facilities');
+        const response = await axios.get('http://localhost:5001/api/facilities');
         setFacilities(response.data);
       } catch (err) {
         setError('Failed to load facilities');

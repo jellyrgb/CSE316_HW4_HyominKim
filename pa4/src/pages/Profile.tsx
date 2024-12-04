@@ -34,7 +34,7 @@ function Profile() {
 
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/user/${userToken}`
+          `http://localhost:5001/api/user/${userToken}`
         );
         setUserData(response.data);
       } catch (error) {
@@ -51,7 +51,7 @@ function Profile() {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/user/${userToken}/password`,
+        `http://localhost:5001/api/user/${userToken}/password`,
         {
           currentPassword,
           newPassword,
@@ -79,7 +79,7 @@ function Profile() {
     const userToken = Cookies.get('userToken');
     
     try {
-      const response = await axios.put(`http://localhost:5000/api/user/${userToken}/name`, {
+      const response = await axios.put(`http://localhost:5001/api/user/${userToken}/name`, {
         newName
       });
 
@@ -115,7 +115,7 @@ function Profile() {
       const imageUrl = cloudinaryResponse.data.secure_url;
       const userToken = Cookies.get("userToken");
 
-      await axios.put(`http://localhost:5000/api/user/${userToken}/image`, {
+      await axios.put(`http://localhost:5001/api/user/${userToken}/image`, {
         profile_image: imageUrl,
       });
 

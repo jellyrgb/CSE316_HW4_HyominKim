@@ -58,7 +58,7 @@ export const ReservationProvider = ({ children }: { children: ReactNode }) => {
 
   const deleteReservation = async (id: number) => {
     try {
-      await axios.delete(`http://localhost:5000/api/reservations/${id}`);
+      await axios.delete(`http://localhost:5001/api/reservations/${id}`);
       setReservations(reservations.filter((reservation) => reservation.id !== id));
     } catch (err) {
       setError('Failed to delete reservation');

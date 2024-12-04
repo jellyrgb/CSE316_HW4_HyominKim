@@ -14,7 +14,7 @@ function Reservations() {
   useEffect(() => {
     const fetchReservations = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/reservations");
+        const response = await axios.get("http://localhost:5001/api/reservations");
         setReservations(response.data);
       } catch (error) {
         console.error("Error fetching reservations:", error);
@@ -27,7 +27,7 @@ function Reservations() {
   // Delete a reservation
   const handleDelete = async (reservationId: number) => {
     try {
-      await axios.delete(`http://localhost:5000/api/reservations/${reservationId}`);
+      await axios.delete(`http://localhost:5001/api/reservations/${reservationId}`);
       setReservations(reservations.filter((reservation) => reservation.id !== reservationId));
     } catch (error) {
       console.error("Error deleting reservation:", error);

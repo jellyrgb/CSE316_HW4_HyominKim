@@ -3,6 +3,8 @@ import mysql from 'mysql2/promise';
 import cors from 'cors';
 import { hashutil } from '../src/data/Hashutil.js';
 
+const PORT = 5001;
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -205,7 +207,6 @@ app.put('/api/user/:id/name', async (req, res) => {
   }
 });
 
-const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
