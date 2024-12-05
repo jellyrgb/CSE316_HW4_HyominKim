@@ -120,14 +120,11 @@ function ReservationForm({ onSelectFacility }: ReservationFormProps) {
     let existingReservationOnSameDay: any = null;
 
     for (const r of existingReservationData) {
-      console.log("existing: " + getDateOnly(r.reservation_date));
       if (getDateOnly(r.reservation_date) === getDateOnly(date)) {
         existingReservationOnSameDay = r;
         break;
       }
     }
-
-    console.log("selected date: " + getDateOnly(date));
 
     if (existingReservationOnSameDay) {
       alert("Cannot reserve. (Existing reservation on the same day)");

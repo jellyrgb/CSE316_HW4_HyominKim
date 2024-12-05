@@ -31,7 +31,7 @@ export const ReservationProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const fetchReservations = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/reservations');
+        const response = await axios.get('http://localhost:5001/api/reservations');
         setReservations(response.data);
       } catch (err) {
         setError('Failed to load reservations');
@@ -45,7 +45,7 @@ export const ReservationProvider = ({ children }: { children: ReactNode }) => {
 
   const addReservation = async (reservation: Reservation) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/reservations', reservation);
+      const response = await axios.post('http://localhost:5001/api/reservations', reservation);
       if (response.status === 201) {
         setReservations([...reservations, response.data]);
       } else {
